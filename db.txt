@@ -1,0 +1,41 @@
+alumb_settings
+	_id
+	alumb_web_name
+	alumb_web_slogan
+	alumb_web_url
+	alumb_web_title
+	alumb_web_keywords
+	alumb_web_description
+//	alumb_web_copyright
+	alumb_web_contact
+	alumb_web_production
+	alumb_web_telephone
+	alumb_web_time
+alumb_users:
+	_id
+	alumb_name
+	alumb_password
+	alumb_role;
+	alumb_role_describe
+	alumb_authorize_time
+	alumb_login_time
+cloud:
+
+cloud_users:
+cloud_audios:
+	_id
+	_domain
+	_mac
+	_name
+	_upload_time
+	_url
+	_type
+	_size
+	
+
+cloud_sms_ussers
+cloud_sms_list
+cloud_sms_calllog
+cloud_sms_contacts
+
+cloud_alumb_users

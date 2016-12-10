@@ -1,0 +1,42 @@
+<?php
+    require_once("../model/UserManager.php");
+    $manager = new UserManager();
+    //$result = $manager->isRegister("abc@123.com");
+    //var_dump($result)."---"."<br>";
+    //$result = $manager->register("abc@123.com", "aaaa", "2");
+    //var_dump( $result);
+    //$result2 = $manager->activeUser("abc@123.com", "123456", "2");
+    //var_dump( $result2);
+    $result3 = $manager->login("abc@123.com", "123456", "2");
+    var_dump($result3);
+    //$result4 = $manager->getUserInfo("963852741");
+    //var_dump($result4);
+    /* $real_name = $this->get('realname');
+    $email = $this->get('email');
+    $nick_name = $this->get('nickname');
+    $sex = $this->get('sex');
+    $birthday = $this->get('birthday');
+    $height = $this->get('height');
+    $weight = $this->get('weight');
+    $headicon = $this->get('headicon');
+    $company = $this->get('company');
+    $vocation = $this->get('vocation');
+    $school = $this->get('school');
+    $signature = $this->get('signature');
+    $interest = $this->get('interest');
+    $balance = $this->get('balance');
+    $technique = $this->get('technique');
+    $rongyuntoken = $this->get('rongyuntoken');
+    $rich = $this->get('rich'); */
+    //$arr = array();
+    /* $arr['realname'] = "steersgman"; 
+    $arr['nickname'] = "nickname";
+    $arr['sex'] = "1";
+    $arr['birthday'] = "123655778768";
+    $arr['height'] = "1";
+    $arr['weight'] = "178";
+    $arr['headicon'] = "/header/963852741.jpg";
+    $arr['company'] = "dahuatech.com"; */
+    //$arr['password'] = "123456";
+    //$result5 = $manager->updateUserInfo("1", $arr);
+    //var_dump($result5);
