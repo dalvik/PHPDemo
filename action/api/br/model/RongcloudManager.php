@@ -5,9 +5,11 @@
      * 
      * v2.0.1
      */
+	require_once("./ParamParse.php");
     require_once('../../rongcloud/rongcloud.php');
-    $appKey = 'appKey';
-    $appSecret = 'appSecret';
+	
+    $appKey = 'lmxuhwagxqw0d';
+    $appSecret = 'b6ePAWsKkndi'; // 开发者平台分配的 App Secret。
     $jsonPath = "../../rongcloud/jsonsource/";
     $paramParse = new ParamParse();
     $code = $paramParse->checkUserParameter($_SERVER);
@@ -17,6 +19,14 @@
         exit(0);
     }
     date_default_timezone_set("PRC");
+	
+	srand((double)microtime()*1000000);
+
+	$nonce = rand(); // 获取随机数。
+	$timestamp = time(); // 获取时间戳。
+
+	$signature = sha1($appSecret.$nonce.$timestamp);
+
     $RongCloud = new RongCloud($appKey,$appSecret);
     $api = $_SERVER[constant('header_api')];
     $sid = 10001;//$_SERVER[constant('header_sid')];
@@ -24,11 +34,15 @@
     $data = null;
     $msg = null;
     if($api == "getToken"){// 获取 Token 方法
-    	$userCode = $_GET['userCode'];
-        $userName = $_GET['userName'];
-        $headerIcon = $_GET['headerIcon'];
-        $data = $RongCloud->user()->getToken($userCode, $userName, $headerIcon);
-        $msg = "success";
+		$str = file_get_contents("php://input");
+    	$arr = array();
+    	parse_str($str, $arr);
+    	$userCode = $arr['userId'];
+        $userName = $arr['name'];
+        $headerIcon = $arr['portraitUri'];
+		$result = $RongCloud->user()->getToken($userCode, $userName, $headerIcon);
+		$data['data'] = json_decode($result);
+        $data['message'] = "success";
         $data['code'] = 200;
     } else if($api == "refresh"){// 刷新用户信息方法
         $userCode = $_GET['userCode'];
@@ -176,7 +190,7 @@
         $addUserList = $_GET['addUserList'];
         $groupId = $_GET['groupId'];
 		$groupName = $_GET['groupName'];
-        $result = $RongCloud->group()->create(["userId1","userid2","userId3"], 'groupId1', 'groupName1');
+        //$result = $RongCloud->group()->create(["userId1","userid2","userId3"], 'groupId1', 'groupName1');
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "syncGroup"){// 同步用户所属群组方法（当第一次连接融云服务器时，需要向融云服务器提交 userId 对应的用户当前所加入的所有群组，此接口主要为防止应用中用户群信息同融云已知的用户所属群信息不同步。）
@@ -207,7 +221,7 @@
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        $result = $RongCloud->group()->join(["userId2","userid3","userId4"], 'groupId1', 'TestGroup');
+        //$result = $RongCloud->group()->join(["userId2","userid3","userId4"], 'groupId1', 'TestGroup');
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "queryGroupUser"){// 查询群成员方法
@@ -221,7 +235,7 @@
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        $result = $RongCloud->group()->quit(["userId2","userid3","userId4"], 'TestGroup');
+        //$result = $RongCloud->group()->quit(["userId2","userid3","userId4"], 'TestGroup');
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "addGagUser"){// 添加禁言群成员方法（在 App 中如果不想让某一用户在群中发言时，可将此用户在群组中禁言，被禁言用户可以接收查看群组中用户聊天信息，但不能发送消息。）
@@ -238,18 +252,18 @@
         $result = $RongCloud->group()->lisGagUser('groupId1');
         $msg = "success";
         $data['code'] = 200;
-    } else if($api == "rollBackGagUser")// 移除禁言群成员方法
+    } else if($api == "rollBackGagUser"){// 移除禁言群成员方法
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        $result = $RongCloud->group()->rollBackGagUser(["userId2","userid3","userId4"], 'groupId1');
+        //$result = $RongCloud->group()->rollBackGagUser(["userId2","userid3","userId4"], 'groupId1');
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "dismissGroup"){// 解散群组方法。（将该群解散，所有用户都无法再接收该群的消息。）
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        result = $RongCloud->group()->dismiss('userId1', 'groupId1');
+        $result = $RongCloud->group()->dismiss('userId1', 'groupId1');
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "createChartRoom"){// 创建聊天室方法
@@ -263,14 +277,14 @@
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        $result = $RongCloud->chatroom()->join(["userId2","userid3","userId4"], 'chatroomId1');
+        //$result = $RongCloud->chatroom()->join(["userId2","userid3","userId4"], 'chatroomId1');
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "queryChatRoomMessage"){// 查询聊天室信息方法
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        $result = $RongCloud->chatroom()->query(["chatroomId1","chatroomId2","chatroomId3"]);
+        //$result = $RongCloud->chatroom()->query(["chatroomId1","chatroomId2","chatroomId3"]);
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "queryChatRoomUser"){// 查询聊天室内用户方法
@@ -340,21 +354,21 @@
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        $result = $RongCloud->chatroom()->addPriority(["RC:VcMsg","RC:ImgTextMsg","RC:ImgMsg"]);
+        //$result = $RongCloud->chatroom()->addPriority(["RC:VcMsg","RC:ImgTextMsg","RC:ImgMsg"]);
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "destroyChatRoom"){// 销毁聊天室方法
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        $result = $RongCloud->chatroom()->destroy(["chatroomId","chatroomId1","chatroomId2"]);
+        //$result = $RongCloud->chatroom()->destroy(["chatroomId","chatroomId1","chatroomId2"]);
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "addchatRoomWhiteListUser"){// 添加聊天室白名单成员方法
         $userCode = $_GET['userCode'];
         $userName = $_GET['userName'];
         $headerIcon = $_GET['headerIcon'];
-        $result = $RongCloud->chatroom()->addWhiteListUser('chatroomId', ["userId1","userId2","userId3","userId4","userId5"]);
+        //$result = $RongCloud->chatroom()->addWhiteListUser('chatroomId', ["userId1","userId2","userId3","userId4","userId5"]);
         $msg = "success";
         $data['code'] = 200;
     } else if($api == "setChatRoomUserPushTag"){// 添加 Push 标签方法
