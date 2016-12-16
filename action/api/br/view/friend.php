@@ -25,9 +25,9 @@
     	parse_str($str, $arr);
     	$userId = $arr['userId'];
     	$userType = $arr['userType'];
-    	$userNumber = $arr['pageNumber'];
+    	$pageNumber = $arr['pageNumber'];
     	$offset = $arr['offset'];
-    	$data = $friendManager->getFirendList($userId, $userType, $userNumber, $offset);
+    	$data = $friendManager->getFirendList($userId, $userType, $pageNumber, $offset);
     }
     echo json_encode($data);
  

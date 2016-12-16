@@ -2,6 +2,7 @@
     require_once("../../dbutil/mysql.php");
     require_once("../../dbutil/mysqlinfo.php");
     require_once("../utils/UserColumn.php");
+	require_once("../utils/NewsColumn.php");
     require_once("../utils/ErrorCode.php");
     require_once("../utils/HeaderKey.php");
     

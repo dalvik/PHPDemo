@@ -1,47 +1,78 @@
 <?php
     require_once("../model/BaseManager.php");
     require_once "../utils/StringsUtil.php";
-    require_once("../utils/FriendColumn.php");
     
-    class FriendManager extends BaseManager{
+    class PersonalNewsManager extends BaseManager{
     	/*
     	{
     		"id=>"1000, "code=>"2000, "message=>"noerror, "data=>"{result}
     	}
     	 */
-        public $TABLE_BR_FRIEND = "br_view_user_friend";
+        public $TABLE_BR_PERAONAL_NEWS = "br_view_user_personal_news";
+		public $TABLE_BR_USER = "br_user";
         
         function __construct(){
         }
     
-
-        function getFirendList($userId, $type, $pageNumber, $pageOffset){
+        function getPersonalNewsThumbnail($userCode){
         	$arr = array();
+			$personDetail = array();
         	$resultCode = -1;
+			//user info
         	$_id = $this->get('_id');
-        	$friend_code = $this->get('friendId');
-        	$nick_name = $this->get('nickName');
-        	$headicon = $this->get('headIcon');
-        	$signature = $this->get('signature');
-        	$user_type = $this->get('userType');
+			$head_icon = $this->get('headIcon');
         	$user_code = $this->get('userCode');
-        	$friend_status = $this->get('friendStatus');
+			$sex = $this->get('sex');
+			$city_code = $this->get('cityCode');
+			$nick_name = $this->get('nickName');
+			$signature = $this->get('signature');        	
         	
-        	$where = $friend_code."='".$userId."'";
-        	$pro = $_id.",".$friend_code.",".$nick_name.",".$headicon.",".$signature.",".$user_type.",".$user_code.",".$friend_status;
+			//news thumbnail
+			$news_type = $this->get('newsType');
+        	$news_content = $this->get('newsContent');
+        	$news_time = $this->get('newsTime');
+			
+        	$where = $user_code."='".$userCode."'";
         	$db = $this->initMysql();
-        	$result = $db->findMore($this->TABLE_BR_FRIEND, $where, $pro, "", "");
+			
+			$userInfoPro = $user_code.",".$head_icon.",".$sex.",".$city_code.",".$nick_name.",".$signature;
+			$personDetailInfo = $this->getPersonlInfo($db, $userInfoPro, $where);
+			//echo $userInfoPro."--".$where;
+			//var_dump($personDetail);
+			
+			$personDetail['userCode'] = $userCode;
+			$personDetail['headIcon'] = $personDetailInfo[$head_icon];
+			$personDetail['sex'] = $personDetailInfo[$sex];
+			$personDetail['cityCode'] = $personDetailInfo[$city_code];
+			$personDetail['nickName'] = $personDetailInfo[$nick_name];
+			$personDetail['signature'] = $personDetailInfo[$signature];
+			
+        	$pro = $_id.",".$news_type.",".$news_content.",".$news_time;
+			$limit = " 3 ";
+			$order = $news_time;
+			//echo $pro."--".$where;
+        	$result = $db->findMore($this->TABLE_BR_PERAONAL_NEWS, $where, $pro, $order, $limit);
+			//var_dump($result);
+			$personDetail['data'] = $result;
         	$arr['msg'] = $db->getMySqlError();
         	if(!empty($result)){
         		$arr['code'] = $this->get('common_result_success');
-        		$arr['data'] = $result;
+        		$arr['data'] = $personDetail;
         	}else {
         		$arr['code'] = $this->get('user_query_error');
-        		$arr['data'] = null;
+        		$arr['data'] = $personDetail;
         	}
         	return $arr;
         }
         
+		/**
+         * getUserInfo
+         */
+		function getPersonlInfo($db, $pro, $where){
+            return $db->find($this->TABLE_BR_USER, $where, $pro, "", "");
+        }
+		
+		
         /**
          * getUserInfo
          */
@@ -74,16 +105,7 @@
             $where = $this->getAcountType($login_type)."='".$userCode."'";
             $pro = $_id.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$birthday.",".$height.",".$weight.",".$headicon.",".$company.",".$vocation.",".$school.",".$signature.",".$interest.",".$balance.",".$technique.",".$rongyuntoken.",".$isfristlogin.",".$rich.",".$register_time.",".$user_status.",".$type;
             $db = $this->initMysql();
-            $result = $db->find($this->TABLE_BR_USER, $where, $pro, "", "");
-            $arr['msg'] = $db->getMySqlError();
-            if(!empty($result)){
-                $arr['code'] = $this->get('common_result_success');
-                $arr['data'] = $result;
-            }else {
-                $arr['code'] = $this->get('user_query_error');
-                $arr['data'] = null;
-            }
-            return $arr;
+            return $db->find($this->TABLE_BR_USER, $where, $pro, "", "");
         }
         
         function __destruct(){
