@@ -42,6 +42,7 @@
         //Ìí¼Ó¼ÇÂ¼
       function add($table, $set){
              $sql = "insert into {$table} set {$set}";
+			 //echo $sql;
              return $this->query($sql);
       }
 
@@ -74,6 +75,7 @@
             $order = empty($order)? "" :  " order by ".$order." desc ";
             $limit= empty($limit)? "" :  " limit " .$limit;
             $sql = "select {$fields} from {$table}  {$where} {$group} {$order} {$limit}";
+			//echo "---->".$sql;
             $query = $this->query($sql);
             $result = array();
             while($rs = $this->assoc($query)){

@@ -8,6 +8,10 @@
     		"id=>"1000, "code=>"2000, "message=>"noerror, "data=>"{result}
     	}
     	 */
+		//$private_uuid = {
+		//	111111111,222222222, 333333333, 444444444, 555555555, 666666666, 777777777, 888888888, 999999999,
+		
+		//};
         public $TABLE_BR_USER = "br_user";
         
         function __construct(){
@@ -452,7 +456,7 @@
         	$type = $this->get('type');
         	
         	$where = $usercode."='".$keyWords."' or ".$email."='".$keyWords."' or ".$telephone."='".$keyWords."'";
-        	$pro = $_id.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$headicon.",".$cityCode.",".$signature.",".$balance.",".$rongyuntoken.",".$user_status.",".$type;
+        	$pro = $_id.",".$usercode.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$headicon.",".$cityCode.",".$signature.",".$balance.",".$rongyuntoken.",".$user_status.",".$type;
         	$result = $db->findMore($this->TABLE_BR_USER, $where, $pro, "", "");
         	$arr['msg'] = $db->getMySqlError();
         	$userList = array();

@@ -58,6 +58,23 @@
     	$data['code'] = 200;
     	$data['data'] = null;
     	$data['message'] = null;
+    } else if($api == "getPersonalNewsList"){//add friend, rong send add message
+    	$str = file_get_contents("php://input");
+    	$arr = array();
+    	parse_str($str, $arr);
+    	$userId = $arr['userId'];
+		//$length = $arr['length'];
+		$offset = $arr['offset'];
+		$data = $personalNewsManager->getPersonalNewsList($userId, 20, $offset);
+    } else if($api == "addPersonalNews"){//add personal message
+    	$str = file_get_contents("php://input");
+    	$arr = array();
+    	parse_str($str, $arr);
+    	$userId = $arr['userId'];
+		$newsType = $arr['newsType'];
+		$newsContent = $arr['newsContent'];
+		$imgSrc = $arr['imgSrc'];
+		$data = $personalNewsManager->insetPersonalNews($userId, $newsType, $newsContent, $imgSrc);
     }
     //$array = array("id"=>$sid, "code"=>$code, "message"=>$msg, "data"=>$data);
     echo json_encode($data);
