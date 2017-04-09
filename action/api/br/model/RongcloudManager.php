@@ -37,7 +37,7 @@
 		$str = file_get_contents("php://input");
     	$arr = array();
     	parse_str($str, $arr);
-    	$userCode = $arr['userId'];
+    	$userCode = $arr['userCode'];
         $userName = $arr['name'];
         $headerIcon = $arr['portraitUri'];
 		$result = $RongCloud->user()->getToken($userCode, $userName, $headerIcon);

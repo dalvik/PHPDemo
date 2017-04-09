@@ -218,6 +218,7 @@
                 }
             } else {
             	$arr['msg'] = $db->getMySqlError();
+				$arr['data'] = null;
                 $resultCode = $this->get('user_login_error');
             }
             $arr['code'] = $resultCode;

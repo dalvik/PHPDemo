@@ -1,7 +1,7 @@
 <?php
-$hostname='localhost:3306';
+$hostname='127.0.0.1:3306';
 $username="root";
-$password="123456";
+$password="";
 $dbname="drovikcom";
 $charset="utf8";
 if(!defined("hostname")) define("hostname", $hostname);

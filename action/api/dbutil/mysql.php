@@ -24,23 +24,22 @@
             $this->dbname = $dbname;
             $this->charset = $charset;        
             //连接mysql数据库
-         $this->conn = mysql_connect($this->hostname ,$this->username,$this->password)or die("数据库连接失败");
-
+         $this->conn = mysqli_connect($this->hostname ,$this->username,$this->password)or die("数据库连接失败");
+	        //echo "---".$this->getMySqlError();
             //选择操作的数据库
-        mysql_select_db($this->dbname, $this->conn);
+        mysqli_select_db($this->conn, $this->dbname);
 
             //设置操作的编码
         $this->query("set names '".$this->charset."'", $this->conn);
         }
 
         //执行sql语句的方法
-     function query($sql){
-//echo $sql;
-            return mysql_query($sql, $this->conn);
+        function query($sql){
+            return mysqli_query($this->conn, $sql);
         }
 
         //添加记录
-      function add($table, $set){
+        function add($table, $set){
              $sql = "insert into {$table} set {$set}";
 			 //echo $sql;
              return $this->query($sql);
@@ -64,8 +63,12 @@
             $order = empty($order)? "" :  " order by" .$order;
             $limit= empty($limit)? "" :  " limit " .$limit;
             $sql = "select {$fields} from {$table}  {$where}  {$order} {$limit}";
-            $query = $this->query($sql);
-            return $this->assoc($query);
+            $result = $this->query($sql);
+			if($result === FALSE){
+				return NULL;
+			} else {
+				return $this->assoc($result);
+			}
          }
 
          //查询多条记录
@@ -86,7 +89,7 @@
          }
 
         function assoc($query){
-            return mysql_fetch_assoc($query);
+            return mysqli_fetch_assoc($query);
         }
 
         function getInsertId(){
@@ -99,8 +102,8 @@
         }
         
         //回收资源
-     function __destruct(){
-            mysql_close($this->conn);
+		function __destruct(){
+            mysqli_close($this->conn);
         }
     }
 ?>
