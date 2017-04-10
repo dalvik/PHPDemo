@@ -36,7 +36,7 @@
         //执行sql语句的方法
      function query($sql){
 //echo $sql;
-            return mysql_query($sql, $this->conn);
+            return mysqli_query($sql, $this->conn);
         }
 
         //添加记录
@@ -84,7 +84,7 @@
          }
 
         function assoc($query){
-            return mysql_fetch_assoc($query);
+            return mysqli_fetch_assoc($query);
         }
 
         //回收资源

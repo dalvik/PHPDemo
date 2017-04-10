@@ -9,17 +9,17 @@
     		"id=>"1000, "code=>"2000, "message=>"noerror, "data=>"{result}
     	}
     	 */
-        public $TABLE_BR_FRIEND = "br_view_user_friend";
+        public $VIEW_BR_FRIEND = "br_view_user_friend_circle_friend";
+        public $TABLE_BR_FRIEND = "br_user_friend";
         
         function __construct(){
         }
     
-
         function getFirendList($userId, $type, $pageNumber, $pageOffset){
         	$arr = array();
         	$resultCode = -1;
         	$_id = $this->get('_id');
-        	$friend_code = $this->get('friendId');
+        	$friend_code = $this->get('masterId');
         	$nick_name = $this->get('nickName');
         	$headicon = $this->get('headIcon');
         	$signature = $this->get('signature');
@@ -27,7 +27,7 @@
         	$user_code = $this->get('userCode');
         	$friend_status = $this->get('friendStatus');
         	
-        	$where = $friend_code."='".$userId."'";
+        	$where = $user_code."='".$userId."'";
         	$pro = $_id.",".$friend_code.",".$nick_name.",".$headicon.",".$signature.",".$user_type.",".$user_code.",".$friend_status;
         	$db = $this->initMysql();
         	$result = $db->findMore($this->TABLE_BR_FRIEND, $where, $pro, "", "");
@@ -40,6 +40,20 @@
         		$arr['data'] = null;
         	}
         	return $arr;
+        }
+        
+        /**
+         * get friend list code
+         */
+        function getFirendCodeList($userId, $type, $pageNumber, $pageOffset){
+        	$friend_code = $this->get('masterId');
+        	$user_code = $this->get('userCode');
+        	
+        	$where = $friend_code."='".$userId."'";
+        	$pro = $user_code;
+        	$db = $this->initMysql();
+        	$result = $db->findMore($this->TABLE_BR_FRIEND, $where, $pro, "", "", "");
+        	return $result;
         }
         
         /**

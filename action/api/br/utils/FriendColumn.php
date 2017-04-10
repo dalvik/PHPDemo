@@ -1,7 +1,7 @@
 <?php
 $_id = "_id";
-$usercode = "userId";
-$friendcode = "friendId";
+$usercode = "userCode";
+$friendcode = "masterId";
 $nickname = "nickName";
 $headicon = "headIcon";
 $signature = "signature";

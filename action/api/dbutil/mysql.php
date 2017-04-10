@@ -80,12 +80,16 @@
             $sql = "select {$fields} from {$table}  {$where} {$group} {$order} {$limit}";
 			//echo "---->".$sql;
             $query = $this->query($sql);
-            $result = array();
-            while($rs = $this->assoc($query)){
-                //将$rs的值添加到$result数组中去
-                $result[] = $rs;
-            }
-            return $result;
+			if($query === FALSE){
+				return NULL;
+			} else {
+				$result = array();
+				while($rs = $this->assoc($query)){
+					//将$rs的值添加到$result数组中去
+					$result[] = $rs;
+				}
+				return $result;
+			}
          }
 
         function assoc($query){
@@ -93,12 +97,12 @@
         }
 
         function getInsertId(){
-        	return mysql_insert_id($this->conn);
+        	return mysqli_insert_id($this->conn);
         	//return ($id=mysql_insert_id($this->conn))>=0 ? $id : $this->query("select last_insert_id();");
         }
         
         function getMySqlError(){
-            return mysql_error();
+            return mysqli_error($this->conn);
         }
         
         //回收资源
