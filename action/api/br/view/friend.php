@@ -19,15 +19,15 @@
     //$id = $_SERVER[constant('header_id')];
     $data = null;
     $msg = null;
-    if($api == "getFriendList"){
+    if($api == "getFriendCircleFriendList"){
     	$str = file_get_contents("php://input");
     	$arr = array();
     	parse_str($str, $arr);
-    	$userId = $arr['userId'];
+    	$userCode = $arr['userCode'];
     	$userType = $arr['userType'];
-    	$pageNumber = $arr['pageNumber'];
-    	$offset = $arr['offset'];
-    	$data = $friendManager->getFirendList($userId, $userType, $pageNumber, $offset);
+    	$length = (int)$arr['length'];
+    	$offset = (int)$arr['offset'];
+    	$data = $friendManager->getFriendCircleFriendList($userCode, $userType, $length, $offset);
     }
     echo json_encode($data);
  

@@ -43,7 +43,7 @@
     	$str = file_get_contents("php://input");
     	$arr = array();
     	parse_str($str, $arr);
-    	$activeId = $arr['activeId'];
+    	$activeId = $arr['_id'];
     	$data = $friendCircleManager->deleteFriendCircleActive($activeId);
     } else if($api == "getFriendCircleActiveList") {
         $friendManager = new FriendManager();
@@ -58,17 +58,16 @@
         $maxNumber = 500;//allowed max friend number
         $pageOffset = 0;
         $friendList = $friendManager->getFirendCodeList($userCode, $userType, $maxNumber, $pageOffset);
-		$friendArray = array();
-		$index = 0;
-		foreach($friendList as $friendCode) {
-			$friendArray[$index] = $friendCode["userCode"];
-			$index++;
-		}
-		$friendArray[count($friendArray)] = $userCode;
-		$listJson = json_encode($friendArray);
-		$listJson = str_replace("[", "(", $listJson);
-		$friendListJson = str_replace("]", ")", $listJson);
-        //$friendList[count($friendList)] = array('userCoce'=>$userCode);
+        $friendArray = array();
+        $index = 0;
+        foreach($friendList as $friendCode) {
+            $friendArray[$index] = $friendCode["userCode"];
+            $index++;
+        }
+        $friendArray[count($friendArray)] = $userCode;
+        $listJson = json_encode($friendArray);
+        $listJson = str_replace("[", "(", $listJson);
+        $friendListJson = str_replace("]",")", $listJson);
         //array_push($friendList, array('userCoce'=>$userCode));
     	$data = $friendCircleManager->getFriendCircleActiveList($friendListJson, $activeId, $pageNumber, $offset);
     } else if($api == "addFriendCircleActiveRemark") {//addFriendCircleActiveRemark
@@ -104,7 +103,8 @@
     	$activeId = $arr['activeId'];
     	$userCode = $arr['userCode'];
         $activeCommenet = $arr['activeComment'];
-    	$data = $friendCircleManager->addFriendCircleActiveComment($activeId, $userCode, $activeCommenet);
+        $recvUserCode = $arr['recvUserCode'];
+    	$data = $friendCircleManager->addFriendCircleActiveComment($activeId, $userCode, $activeCommenet, $recvUserCode);
     } else if($api == "deleteFriendCircleActiveComment") {
         $friendManager = new FriendManager();
     	$str = file_get_contents("php://input");

@@ -9,28 +9,29 @@
     		"id=>"1000, "code=>"2000, "message=>"noerror, "data=>"{result}
     	}
     	 */
-        public $VIEW_BR_FRIEND = "br_view_user_friend_circle_friend";
+        public $VIEW_BR_FRIEND_CIRCLE_FIREND_LIST = "br_view_user_friend_circle_friend";
         public $TABLE_BR_FRIEND = "br_user_friend";
         
         function __construct(){
         }
     
-        function getFirendList($userId, $type, $pageNumber, $pageOffset){
+        function getFriendCircleFriendList($userId, $type, $pageNumber, $offset){
         	$arr = array();
         	$resultCode = -1;
         	$_id = $this->get('_id');
-        	$friend_code = $this->get('masterId');
+        	$masterId = $this->get('masterId');
         	$nick_name = $this->get('nickName');
         	$headicon = $this->get('headIcon');
         	$signature = $this->get('signature');
         	$user_type = $this->get('userType');
         	$user_code = $this->get('userCode');
-        	$friend_status = $this->get('friendStatus');
+        	$friend_status = $this->get('userStatus');
         	
-        	$where = $user_code."='".$userId."'";
-        	$pro = $_id.",".$friend_code.",".$nick_name.",".$headicon.",".$signature.",".$user_type.",".$user_code.",".$friend_status;
+        	$where = $masterId."='".$userId."'";
+        	$pro = $_id.", ".$masterId.", ".$nick_name.", ".$headicon.", ".$signature.", ".$user_type.", ".$user_code.", ".$friend_status;
+                $limit = $offset * $pageNumber.", ".$pageNumber;
         	$db = $this->initMysql();
-        	$result = $db->findMore($this->TABLE_BR_FRIEND, $where, $pro, "", "");
+        	$result = $db->findMore($this->VIEW_BR_FRIEND_CIRCLE_FIREND_LIST, $where, $pro, "", "", $limit);
         	$arr['msg'] = $db->getMySqlError();
         	if(!empty($result)){
         		$arr['code'] = $this->get('common_result_success');

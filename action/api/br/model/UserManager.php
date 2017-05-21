@@ -1,6 +1,7 @@
 <?php
     require_once("../model/BaseManager.php");
     require_once "../utils/StringsUtil.php";
+    require_once("../utils/FriendColumn.php");
     
     class UserManager extends BaseManager{
     	/*
@@ -151,7 +152,7 @@
                             $arr['msg'] = $db->getMySqlError();
                             $user_code = $this->get('userCode');
                             $register_time = $this->get('registerTime');
-                            $registerType = $this->get('type');
+                            $registerType = $this->get('userType');
                             $set = $user_code."='".$user_invite_code_temp."', ".$register_time."='".$now."',".$user_status."='".$status_active."', ".$registerType."='".$invite_type."',".$rongYunToken."='".$user_code."'";
                             if($vCode != $user_invite_code_temp){//"invite code error."
                                 $arr['code'] = $this->get('user_invite_not_exist');
@@ -254,10 +255,10 @@
         	$rich = $this->get('rich');
         	$register_time = $this->get('registerTime');
         	$user_status = $this->get('userStatus');
-        	$type = $this->get('type');
+        	$userType = $this->get('userType');
         
         	$where = $_id."='".$id."'";
-        	$pro = $_id.",".$real_code.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$birthday.",".$height.",".$weight.",".$headicon.",".$cityCode.",".$company.",".$vocation.",".$school.",".$signature.",".$interest.",".$balance.",".$technique.",".$rongyuntoken.",".$isfristlogin.",".$rich.",".$register_time.",".$user_status.",".$type;
+        	$pro = $_id.",".$real_code.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$birthday.",".$height.",".$weight.",".$headicon.",".$cityCode.",".$company.",".$vocation.",".$school.",".$signature.",".$interest.",".$balance.",".$technique.",".$rongyuntoken.",".$isfristlogin.",".$rich.",".$register_time.",".$user_status.",".$userType;
         	$result = $db->find($this->TABLE_BR_USER, $where, $pro, "", "");
         	if(!empty($result)){
         		$arr['code'] = $this->get('common_result_success');
@@ -298,10 +299,56 @@
             $rich = $this->get('rich');
             $register_time = $this->get('registerTime');
             $user_status = $this->get('userStatus');
-            $type = $this->get('type');
+            $userType = $this->get('userType');
             
             $where = $_id."='".$id."'";
-            $pro = $_id.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$birthday.",".$height.",".$weight.",".$cityCode.",".$headicon.",".$company.",".$vocation.",".$school.",".$signature.",".$interest.",".$balance.",".$technique.",".$rongyuntoken.",".$isfristlogin.",".$rich.",".$register_time.",".$user_status.",".$type;
+            $pro = $_id.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$birthday.",".$height.",".$weight.",".$cityCode.",".$headicon.",".$company.",".$vocation.",".$school.",".$signature.",".$interest.",".$balance.",".$technique.",".$rongyuntoken.",".$isfristlogin.",".$rich.",".$register_time.",".$user_status.",".$userType;
+            $db = $this->initMysql();
+            $result = $db->find($this->TABLE_BR_USER, $where, $pro, "", "");
+            if(!empty($result)){
+                $arr['code'] = $this->get('common_result_success');
+                $arr['data'] = $result;
+            }else {
+	            $arr['msg'] = $db->getMySqlError();
+                $arr['code'] = $this->get('user_query_error');
+                $arr['data'] = null;
+            }
+            return $arr;
+        }
+        
+		/**
+         * getUserInfo
+         */
+        function getUserInfoByUserCode($userCode){
+        	$arr = array();
+            $resultCode = -1;
+            $_id = $this->get('_id');
+			$user_code = $this->get('userCode');
+            $real_name = $this->get('realName');
+            $email = $this->get('email');
+            $nick_name = $this->get('nickName');
+            $sex = $this->get('sex');
+            $birthday = $this->get('birthday');
+            $height = $this->get('height');
+            $weight = $this->get('weight');
+            $cityCode = $this->get('cityCode');
+            $headicon = $this->get('headIcon');
+            $company = $this->get('company');
+            $vocation = $this->get('vocation');
+            $school = $this->get('school');
+            $signature = $this->get('signature');
+            $interest = $this->get('interest');
+            $balance = $this->get('balance');
+            $technique = $this->get('technique');
+            $rongyuntoken = $this->get('rongYunToken');
+            $isfristlogin = $this->get('isFristLogin');
+            $rich = $this->get('rich');
+            $register_time = $this->get('registerTime');
+            $user_status = $this->get('userStatus');
+            $userType = $this->get('userType');
+            
+            $where = $user_code."='".$userCode."'";
+            $pro = $_id.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$birthday.",".$height.",".$weight.",".$cityCode.",".$headicon.",".$company.",".$vocation.",".$school.",".$signature.",".$interest.",".$balance.",".$technique.",".$rongyuntoken.",".$isfristlogin.",".$rich.",".$register_time.",".$user_status.",".$userType;
             $db = $this->initMysql();
             $result = $db->find($this->TABLE_BR_USER, $where, $pro, "", "");
             if(!empty($result)){
@@ -426,8 +473,10 @@
             $result = $db->edit($this->TABLE_BR_USER, $set, $where);
             if($result){
             	$arr['code'] = $this->get('common_result_success');
+				$arr['data'] = $this->getUserInfoByUserCode($userInfo[$user_code]);
             } else {
             	$arr['code'] = $this->get('user_update_error');
+				$arr['data'] = $this->get('common_result_success');
             	
             }
             $arr['msg'] = $db->getMySqlError();
@@ -454,10 +503,10 @@
         	$balance = $this->get('balance');
         	$rongyuntoken = $this->get('rongYunToken');
         	$user_status = $this->get('userStatus');
-        	$type = $this->get('type');
+        	$userType = $this->get('userType');
         	
         	$where = $usercode."='".$keyWords."' or ".$email."='".$keyWords."' or ".$telephone."='".$keyWords."'";
-        	$pro = $_id.",".$usercode.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$headicon.",".$cityCode.",".$signature.",".$balance.",".$rongyuntoken.",".$user_status.",".$type;
+        	$pro = $_id.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$headicon.",".$cityCode.",".$signature.",".$balance.",".$rongyuntoken.",".$user_status.",".$userType;
         	$result = $db->findMore($this->TABLE_BR_USER, $where, $pro, "", "");
         	$arr['msg'] = $db->getMySqlError();
         	$userList = array();
@@ -527,6 +576,9 @@
             return $name;
         }
         
+        function addNewFriend($userCode, $userType, $friendCode){
+            return null;
+        }
         function __destruct(){
         }
     }

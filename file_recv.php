@@ -14,25 +14,30 @@
 		$target_path = $base_path.$_FILES['file']['name'];
 		$code = $_FILES['file']['error'];
 		$url = $web_root.$self_path.$target_path;
+		$relativePath = null;
+		if(substr($self_path, 0, 1) === "/"){
+			$self_path = substr($self_path, 1, strlen($self_path));
+		}
+		$relativePath = $self_path.$target_path;
 		if(move_uploaded_file($_FILES['file']['tmp_name'], $target_path)){
 			$launch_mod = 3;
 			if(isset($_POST['mode'])){
 				$launch_mod = $_POST['mode'];
 			}
-			$TABLE_FILE_LIST="cloud_user_file_list";
+			//$TABLE_FILE_LIST="cloud_user_file_list";
 			/**
 			* connect mysql
 			*/
-			$db = new mysql($hostname, $username, $password, $dbname, $charset);
-			$upload_ip = $_SERVER['REMOTE_ADDR'];
-			$user_agent = $_SERVER['HTTP_USER_AGENT'];
-			$set = "uuid='".$uuid."', launch_mod='".$launch_mod."', upload_time='".time()."', user_agent='".$user_agent."', upload_ip ='".$upload_ip."', path='".$url."'";
+			//$db = new mysql($hostname, $username, $password, $dbname, $charset);
+			//$upload_ip = $_SERVER['REMOTE_ADDR'];
+			//$user_agent = $_SERVER['HTTP_USER_AGENT'];
+			//$set = "uuid='".$uuid."', launch_mod='".$launch_mod."', upload_time='".time()."', user_agent='".$user_agent."', upload_ip ='".$upload_ip."', path='".$url."'";
 			// add file upload record
-			$db->add($TABLE_FILE_LIST, $set);
-			$array = array("code"=>$code, "path"=>$url);
+			//$db->add($TABLE_FILE_LIST, $set);
+			$array = array("code"=>$code, "path"=>$relativePath);
 			echo json_encode($array);
 		} else {
-			$array = array("code"=>$code, "path"=>$url);
+			$array = array("code"=>$code, "path"=>$relativePath);
 			echo json_encode($array);
 		}
 	} else {

@@ -5,8 +5,8 @@
      * 
      * v2.0.1
      */
-	require_once("./ParamParse.php");
-    require_once('../../rongcloud/rongcloud.php');
+	 require_once("../model/ParamParse.php");
+    require_once("../../rongcloud/rongcloud.php");
 	
     $appKey = 'lmxuhwagxqw0d';
     $appSecret = 'b6ePAWsKkndi'; // 开发者平台分配的 App Secret。

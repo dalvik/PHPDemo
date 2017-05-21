@@ -1,6 +1,7 @@
 <?php
 	header("Content-Type:text/html;charset=utf-8");
     include "../model/UserManager.php";
+    //include "../model/RongcloudManager.php";
     include "../model/ParamParse.php";
     //include "../utils/HeaderKey.php";
     require_once("../utils/HeaderKey.php");
@@ -54,10 +55,17 @@
     	$account = $arr['mobile'];
     	$data = $userManager->searchUser($account);
     } else if($api == "addFriend"){//add friend, rong send add message
-    	$data = array();
-    	$data['code'] = 200;
-    	$data['data'] = null;
-    	$data['message'] = null;
+        $str = file_get_contents("php://input");
+    	$arr = array();
+    	parse_str($str, $arr);
+        $userCode = $arr['userCode'];
+        $userType = $arr['userType'];
+        $friendCode = $arr['friendCode'];
+        //$rongcloudManager = new RongcloudManager();
+        //$data = $userManager->addNewFriend($userCode, $userType, $friendCode);
+    	//$data['code'] = 200;
+    	//$data['data'] = null;
+    	//$data['message'] = null;
     }
     //$array = array("id"=>$sid, "code"=>$code, "message"=>$msg, "data"=>$data);
     echo json_encode($data);
