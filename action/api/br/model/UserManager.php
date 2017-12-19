@@ -1,7 +1,9 @@
-<?php
+ï»¿<?php
+	//header("Content-type: text/xml;charset=utf-8");
     require_once("../model/BaseManager.php");
     require_once "../utils/StringsUtil.php";
     require_once("../utils/FriendColumn.php");
+	require_once("../utils/EmailFunctions.php");
     
     class UserManager extends BaseManager{
     	/*
@@ -14,20 +16,20 @@
 		
 		//};
         public $TABLE_BR_USER = "br_user";
-        
+		
         function __construct(){
         }
     
         /**
-         * ¼ì²éÕË»§ÊÇ·ñÒÑ¾­×¢²á
+         * æ£€æŸ¥è´¦æˆ·æ˜¯å¦å·²ç»æ³¨å†Œ
          */
         function isRegister($account){
         	$arr = array();
             $db = $this->initMysql();
             $_id = $this->get('_id');
-            $invite_time = $this->get('invite_time');
-            $invite_code = $this->get('invite_code');
-            $user_status = $this->get('user_status');
+            $invite_time = $this->get('inviteTime');
+            $invite_code = $this->get('inviteCode');
+            $user_status = $this->get('userStatus');
             $email = $this->get('email');
             $pro = $_id.", ".$invite_time.", ".$invite_code.",".$user_status;
             $result = $db->find($this->TABLE_BR_USER, $email." = '".$account."'", $pro, "", "");
@@ -35,22 +37,28 @@
             if($result){
             	$arr['code'] = $this->get('common_result_success');//success
                 $arr['msg'] = '';
-            	$data['status'] = $result[$user_status];//0£ºÎ´×¢²á 1£ºÒÑ×¢²á£¬Õı³£Ê¹ÓÃ 2£ºÒÑ×¢²áÎ´¼¤»î  3£º½ûÓÃ -1£º×¢Ïú
+				$data = array();
+				$data['status'] = $result[$user_status];//0ï¼šæœªæ³¨å†Œ 1ï¼šå·²æ³¨å†Œï¼Œæ­£å¸¸ä½¿ç”¨ 2ï¼šå·²æ³¨å†Œæœªæ¿€æ´»  3ï¼šç¦ç”¨ -1ï¼šæ³¨é”€
+            	$arr['data'] = $data;
             } else {
 	            $arr['code'] = $this->get('user_isregister_error');//not exist
 	            $arr['msg'] = $db->getMySqlError();
+				$data = array();
+				$data['status'] =  -1004;
+				$arr['data'] = $data;
             }
-            $arr['data'] = $data;
+            //$arr['data'] = $data;
             return $arr;
         }
         
         /**
-         * ×¢²áÕË»§
+         * æ³¨å†Œè´¦æˆ·
          */
         function register($account, $vCode, $regist_type, $md5Pwd){//register type:0 phone 1: email
             $arr = array();
         	$db = $this->initMysql();
             $_id = $this->get('_id');
+			$user_code = $this->get('userCode');
             $invite_time = $this->get('inviteTime');
             $invite_code = $this->get('inviteCode');
             $user_status = $this->get('userStatus');
@@ -65,50 +73,67 @@
             $stringUtil = new StringsUtil();
             $data = array();
             $code = 0;
-        	if(!empty($result)){//ÓÃ»§ĞÅÏ¢ÒÔ¼°´æÔÚ
+			$emailFromUser = 'å“ç»´ç§‘æŠ€';
+			$emailTitle = 'è“ç‰™å½•éŸ³æœºè´¦æˆ·æ¿€æ´»';
+			$emailCall = '&nbsp;&nbsp;&nbsp;&nbsp;å°Šæ•¬çš„ '.$account.'ï¼Œ æ‚¨å¥½ï¼š</br></br>';
+			$emailHeader = '&nbsp;&nbsp;&nbsp;&nbsp;è¯·ç‚¹å‡»ä¸‹é¢çš„é“¾æ¥æ¿€æ´»è´¦å·å®Œæˆæ³¨å†Œã€‚ï¼ˆè¯·åœ¨48å°æ—¶å†…å®Œæˆï¼‰</br>';
+			$emailUrl = '';
+			$emailFooter = '&nbsp;&nbsp;&nbsp;&nbsp;å¦‚æœè¯¥é“¾æ¥æ— æ³•ç‚¹å‡»ï¼Œè¯·ç›´æ¥æ‹·è´ä»¥ä¸Šé“¾æ¥åˆ°æµè§ˆå™¨åœ°å€æ è®¿é—®ã€‚</br></br>';
+			$emailSign = '&nbsp;&nbsp;&nbsp;&nbsp;æ­¤é‚®ä»¶ç”±å“ç»´ç½‘ç³»ç»Ÿè‡ªåŠ¨å‘å‡ºï¼Œç³»ç»Ÿä¸æ¥å—å›ä¿¡ï¼Œè¯·å‹¿ç›´æ¥å›å¤ã€‚</br>è°¢è°¢';
+        	if(!empty($result)){//ç”¨æˆ·ä¿¡æ¯ä»¥åŠå­˜åœ¨
         		$user_status_tmp = $result[$user_status];
-        		$invite_time_tmp = $result[$invite_time];//ÑûÇëÊ±¼ä
-                if($user_status_tmp == $status_not_active){//Î´¼¤»î
-                    if(($invite_time_tmp + $anHourMicSecond) < $now){//ÑûÇëÂë¹ıÆÚ
+        		$invite_time_tmp = $result[$invite_time];//é‚€è¯·æ—¶é—´
+                if($user_status_tmp == $status_not_active){//æœªæ¿€æ´»
+                    if(($invite_time_tmp + $anHourMicSecond) < $now){//é‚€è¯·ç è¿‡æœŸ
                         $invite_code_temp = $stringUtil->showunique_rand(100000, 999999,1);
                         $set = $invite_time."='".$now."', ".$user_status."='".$status_not_active."', ".$invite_code."='".$invite_code_temp."'";
-                        $resultCode = 1;//send_mail("", "", "", "active", "http://www.baidu.com/invite_code=".$invite_code_temp."&invite_time=1234567890989&invite_type=1&invite_email=abc@123.com");
-                        if($resultCode == 1){
+						$emailUrl = "&nbsp;&nbsp;&nbsp;&nbsp;http://www.drovik.com/action/api/br/view/active.php?invite_code=".intval($invite_code_temp)."&invite_time=".$now."&invite_type=".$regist_type."&invite_email=".$account.'</br>';
+						$content = $emailCall.$emailHeader.$emailUrl.$emailFooter.$emailSign;
+						$flag = sendMail($account, $emailFromUser, $emailTitle, $content);
+                        $code = $this->get('common_result_success');
+						//echo $flag;
+                        if($flag == 1){
                             $result = $db->edit($this->TABLE_BR_USER, $set, $where);
                             $arr['msg'] = $db->getMySqlError();
                             if($result){
-                                $code =  $status_not_active;
+								$data['status'] = $this->get('user_status_not_actived');
                             }
                         } else {
-                            $code = $this->get('user_register_error');//error
+							$data['status'] = $this->get('user_register_error');//error
                         }
-                    } else {//ÔÚÓĞĞ§ÆÚÄÚ
-                        $code = $this->get('user_status_not_actived');
+                    } else {//åœ¨æœ‰æ•ˆæœŸå†…
+                        $code = $this->get('common_result_success');
+						$data['status'] = $this->get('user_status_not_actived');
                     }
                 } else {
-                    $code =  $user_status_tmp;//ÆäËû×´Ì¬
+					$code = $this->get('common_result_success');//æ‰§è¡ŒæˆåŠŸ
+                    $data['status'] = $this->get('user_status_actived');//å·²æ¿€æ´»ï¼Œè¯·ç™»å½•
                 }
-        	} else {//ĞÂÓÃ»§
+        	} else {//æ–°ç”¨æˆ·
                 $is_first_login = 0;
                 $pwd = $this->get('password');
                 $invite_code_temp = $stringUtil->showunique_rand(100000, 999999,1);
-                $set = $pwd."='".$md5Pwd."', ".$invite_time."='".$now."', ".$user_status."='".$status_not_active."', ".$invite_code."='".$invite_code_temp."', ";
+				$user_code_temp = $stringUtil->showunique_rand(100000000, 9999999,1);
+                $set = $user_code.'='.$user_code_temp.', '.$pwd."='".$md5Pwd."', ".$invite_time."='".$now."', ".$user_status."='".$status_not_active."', ".$invite_code."='".$invite_code_temp."', ";
                 $set = $set.$where;
-                $resultCode = 1;//send_mail("", "", "", "active", "http://www.baidu.com/invite_code=".$invite_code_temp."&invite_time=1234567890989&invite_type=1&invite_email=abc@123.com");
-                if($resultCode == 1){//send mail sucess
+				$emailUrl = "http://www.drovik.com/action/api/br/view/active.php?invite_code=".intval($invite_code_temp)."&invite_time=".$now."&invite_type=".$regist_type."&invite_email=".$account.'</br>';
+				$content = $emailCall.$emailHeader.$emailUrl.$emailFooter.$emailSign;
+				$flag = sendMail($account, $emailFromUser, $emailTitle, $content);
+				$code = $this->get('common_result_success');//success
+                if($flag == 1){//send mail sucess
                     $result = $db->add($this->TABLE_BR_USER, $set);
                     $arr['msg'] = $db->getMySqlError();
                     if($result){//SUCCESS
-                        $code = $this->get('user_status_not_actived');//wait for active
+						$data['status'] = $this->get('user_status_not_actived');
                     } else {
-                        $code = $this->get('user_invite_error');//error
+						$data['status'] = $this->get('user_invite_error');
                     }
                 } else {
-                    $code = $this->get('user_invite_error');//error
+					$data['status'] = $this->get('user_invite_error');
                 }
             }
             $arr['code'] = $code;
-            $arr['data'] = null;
+            $arr['data'] = $data;
             return $arr;
         }
         
@@ -121,23 +146,20 @@
             $where = $this->getAcountType($invite_type)."='".$account."'";
             $resultCode = -1;
             $_id = $this->get('_id');
+			$user_code = $this->get('userCode');
             $invite_time = $this->get('inviteTime');
             $invite_code = $this->get('inviteCode');
             $user_status = $this->get('userStatus');
             $email = $this->get('email');
-            $rongYunToken = $this->get('rongyuntoken');
-            $pro = $_id.", ".$invite_time.", ".$invite_code.",".$user_status;
+            $rongYunToken = $this->get('rongYunToken');
+            $pro = $_id.", ".$user_code.", ".$invite_time.", ".$invite_code.",".$user_status;
             $db = $this->initMysql();
-            //²éÑ¯×¢²á×´Ì¬
+            //æŸ¥è¯¢æ³¨å†ŒçŠ¶æ€
             $result = $db->find($this->TABLE_BR_USER, $where, $pro, "", "");
             $arr['msg'] = $db->getMySqlError();
             $status_not_active = $this->get('user_status_not_actived');
             $status_active = $this->get('user_status_active');
             if(!empty($result)){
-                //$time = explode(" ", microtime());
-                //$time = $time[1].($time[0]*1000);
-                //$time2 = explode(".", $time);
-                //$time = $time2[0];
                 $now = time();
                 $invite_time = $result[$invite_time];
                 $user_status_temp = $result[$user_status];
@@ -146,18 +168,19 @@
                 } else {
                     if($user_status_temp == $status_not_active){//not actived
                         $anHourMicSecond = 24*3600*1000;
-                        if($now<($invite_time + $anHourMicSecond)){//24Ğ¡Ê±¹ıÆÚ
+                        if($now<($invite_time + $anHourMicSecond)){//24å°æ—¶è¿‡æœŸ
                             $user_invite_code_temp = $result[$invite_code];
+							$user_code_temp = $result[$user_code];
                             $genIdArr = $db->find($this->TABLE_BR_USER, "", "max(_id)", "", "");//general user code
                             $arr['msg'] = $db->getMySqlError();
                             $user_code = $this->get('userCode');
                             $register_time = $this->get('registerTime');
                             $registerType = $this->get('userType');
-                            $set = $user_code."='".$user_invite_code_temp."', ".$register_time."='".$now."',".$user_status."='".$status_active."', ".$registerType."='".$invite_type."',".$rongYunToken."='".$user_code."'";
+                            $set = $user_code."='".$user_code_temp."', ".$register_time."='".$now."',".$user_status."='".$status_active."', ".$registerType."='".$invite_type."',".$rongYunToken."='".$user_code_temp."'";
                             if($vCode != $user_invite_code_temp){//"invite code error."
                                 $arr['code'] = $this->get('user_invite_not_exist');
                             } else {
-                                //¼¤»îÕË»§£¬ÉèÖÃÓÃ»§id£¬ÉèÖÃ×´Ì¬£¬ÉèÖÃ×¢²áÊ±¼ä
+                                //æ¿€æ´»è´¦æˆ·ï¼Œè®¾ç½®ç”¨æˆ·idï¼Œè®¾ç½®çŠ¶æ€ï¼Œè®¾ç½®æ³¨å†Œæ—¶é—´
                                 $resultUpdate = $db->edit($this->TABLE_BR_USER, $set, $where);
                                 $arr['msg'] = $db->getMySqlError();
                                 if(!empty($resultUpdate)){//"active success.";
@@ -182,10 +205,10 @@
         
         /**
          * user login
-         * 1¡¢Ğ£ÑéÓÃ»§ÃûºÍÃÜÂë
-         * 2¡¢Ğ£ÑéÊÇ·ñµÇÂ½
-         * 3¡¢Ğ£Ñéµ±Ç°ÓÃ»§×´Ì¬
-         * 4¡¢µÇÂ½³É¹¦£¬»ñÈ¡ÓÃ»§ĞÅÏ¢
+         * 1ã€æ ¡éªŒç”¨æˆ·åå’Œå¯†ç 
+         * 2ã€æ ¡éªŒæ˜¯å¦ç™»é™†
+         * 3ã€æ ¡éªŒå½“å‰ç”¨æˆ·çŠ¶æ€
+         * 4ã€ç™»é™†æˆåŠŸï¼Œè·å–ç”¨æˆ·ä¿¡æ¯
          */
         function login($account, $pwdMd5, $login_type){
         	$arr = array();
@@ -205,17 +228,17 @@
             if(!empty($result)){
                 $status_temp = $result[$user_status];
                 $pwd = $result[$password];
-                if($pwdMd5 == $pwd){//ÃÜÂëĞ£ÑéÍ¨¹ı
-                	if($status_temp == $this->get('user_status_active')){//ÓÃ»§ÒÑ¼¤»î£¬×´Ì¬Õı³£
+                if($pwdMd5 == $pwd){//å¯†ç æ ¡éªŒé€šè¿‡
+                	if($status_temp == $this->get('user_status_active')){//ç”¨æˆ·å·²æ¿€æ´»ï¼ŒçŠ¶æ€æ­£å¸¸
                 		return $this->getUserInfoByDb($result[$_id], $db);
-                	}else {//Î´¼¤»î»òÕß±»½ûÓÃ
+                	}else {//æœªæ¿€æ´»æˆ–è€…è¢«ç¦ç”¨
                 		$resultCode = $status_temp;
                         $data = array();
                         $data['email'] = $result[$email];
                         $arr['data'] = $data;
                 	}
                 }else{
-                	$resultCode = $this->get('user_login_error');//ÓÃ»§Ãû»òÕßÃÜÂë´íÎó
+                	$resultCode = $this->get('user_login_error');//ç”¨æˆ·åæˆ–è€…å¯†ç é”™è¯¯
                 }
             } else {
             	$arr['msg'] = $db->getMySqlError();
@@ -233,7 +256,7 @@
         	$arr = array();
         	$resultCode = -1;
         	$_id = $this->get('_id');
-        	$real_code = $this->get('userCode');
+        	$user_code = $this->get('userCode');
         	$real_name = $this->get('realName');
         	$email = $this->get('email');
         	$nick_name = $this->get('nickName');
@@ -241,7 +264,7 @@
         	$birthday = $this->get('birthday');
         	$height = $this->get('height');
         	$weight = $this->get('weight');
-                $cityCode = $this->get('cityCode');
+            $cityCode = $this->get('cityCode');
         	$headicon = $this->get('headIcon');
         	$company = $this->get('company');
         	$vocation = $this->get('vocation');
@@ -258,7 +281,7 @@
         	$userType = $this->get('userType');
         
         	$where = $_id."='".$id."'";
-        	$pro = $_id.",".$real_code.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$birthday.",".$height.",".$weight.",".$headicon.",".$cityCode.",".$company.",".$vocation.",".$school.",".$signature.",".$interest.",".$balance.",".$technique.",".$rongyuntoken.",".$isfristlogin.",".$rich.",".$register_time.",".$user_status.",".$userType;
+        	$pro = $_id.",".$user_code.",".$real_name.",".$email.",".$nick_name.",".$sex.",".$birthday.",".$height.",".$weight.",".$headicon.",".$cityCode.",".$company.",".$vocation.",".$school.",".$signature.",".$interest.",".$balance.",".$technique.",".$rongyuntoken.",".$isfristlogin.",".$rich.",".$register_time.",".$user_status.",".$userType;
         	$result = $db->find($this->TABLE_BR_USER, $where, $pro, "", "");
         	if(!empty($result)){
         		$arr['code'] = $this->get('common_result_success');
@@ -519,18 +542,18 @@
         	}
         	return $arr;
         }
-        
+
         function send_mail($to, $from, $password, $subject, $body){
-            //±êÌâ²»ÄÜ´ø»»ĞĞ
+            //æ ‡é¢˜ä¸èƒ½å¸¦æ¢è¡Œ
             $subject=str_replace("\r\n",' ',$subject);
-            //ĞĞÊ×µÄ¡°.¡±ÊÇSMTPÔ¤ÁôµÄ¸ñÊ½£¬ĞèÒªÓÃ¡°..¡±×ªÒâ
+            //è¡Œé¦–çš„â€œ.â€æ˜¯SMTPé¢„ç•™çš„æ ¼å¼ï¼Œéœ€è¦ç”¨â€œ..â€è½¬æ„
             $body=preg_replace('/(=?^|\r\n)\./','..',$body);
-            //´Ó·¢ĞÅÓÊÏäÖĞÕÒµ½ÓÃ»§ÃûºÍ·şÎñÆ÷ÓòÃû
+            //ä»å‘ä¿¡é‚®ç®±ä¸­æ‰¾åˆ°ç”¨æˆ·åå’ŒæœåŠ¡å™¨åŸŸå
             $u=explode('@',$from);
-            //Á¬½ÓÓÊÏäSMTP·şÎñÆ÷µÄ25¶Ë¿Ú
+            //è¿æ¥é‚®ç®±SMTPæœåŠ¡å™¨çš„25ç«¯å£
             $s=fsockopen('smtp.'.$u[1],25);
             fgets($s);
-            //¹¹ÔìÓÊ¼şÄÚÈİÊı¾İ
+            //æ„é€ é‚®ä»¶å†…å®¹æ•°æ®
             $data=array(
                 'MIME-Version: 1.0',
                 'Content-Type: text/html',
@@ -538,7 +561,7 @@
                 "Subject: $subject",
                 "\r\n$body",'.'
             );
-            //¸ù¾İSMTPĞ­ÒéÓëÓÊ¼ş·şÎñÆ÷×öÒ»Ğ©Ó¦´ğ
+            //æ ¹æ®SMTPåè®®ä¸é‚®ä»¶æœåŠ¡å™¨åšä¸€äº›åº”ç­”
             foreach(array(
                 'HELO sb',
                 'AUTH LOGIN',
@@ -548,20 +571,20 @@
                 "RCPT TO: <$to>",
                 'DATA',implode("\r\n",$data)
             ) as $i){
-                //·¢ËÍÏûÏ¢
+                //å‘é€æ¶ˆæ¯
                 fwrite($s,"$i\r\n");
-                //µÈ´ı·µ»Ø²¢»ñÈ¡·µ»ØĞÅÏ¢
+                //ç­‰å¾…è¿”å›å¹¶è·å–è¿”å›ä¿¡æ¯
                 $m=fgets($s);
-                //Èç¹û·µ»ØµÄÊÇ´íÎóĞÅÏ¢Ôò½áÊøº¯Êı
+                //å¦‚æœè¿”å›çš„æ˜¯é”™è¯¯ä¿¡æ¯åˆ™ç»“æŸå‡½æ•°
                 if($m[0]>3)return $m;
             };
-            //¹Ø±Õsock
+            //å…³é—­sock
             fclose($s);
         }
         
         /**
-         * »ñÈ¡ÓÃ»§×¢²á×´Ì¬
-         * ÓÃ»§ÀàĞÍ£¬ÓÃ»§ÕË»§£¬
+         * è·å–ç”¨æˆ·æ³¨å†ŒçŠ¶æ€
+         * ç”¨æˆ·ç±»å‹ï¼Œç”¨æˆ·è´¦æˆ·ï¼Œ
          * type: 1 email 2 telephone 3 usercode
          */
         function getAcountType($type){

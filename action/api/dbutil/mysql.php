@@ -15,16 +15,18 @@
         public $password;
         public $conn;
         public $dbname;
+		public $dbport;
         public $charset;
 
-        function __construct($hostname, $username, $password, $dbname, $charset){
+        function __construct($hostname, $username, $password, $dbname, $dbport, $charset){
             $this->hostname = $hostname;
             $this->username = $username;
             $this->password = $password;
             $this->dbname = $dbname;
+			$this->dbport = $dbport;
             $this->charset = $charset;        
             //连接mysql数据库
-         $this->conn = mysqli_connect($this->hostname ,$this->username,$this->password)or die("数据库连接失败");
+         $this->conn = mysqli_connect($this->hostname ,$this->username,$this->password, $this->dbname, $this->dbport)or die("数据库连接失败");
 	        //echo "---".$this->getMySqlError();
             //选择操作的数据库
         mysqli_select_db($this->conn, $this->dbname);
@@ -48,6 +50,7 @@
         //修改记录
         function edit($table, $set, $where){
             $sql = "update {$table} set {$set} where {$where}";
+			//echo $sql;
             return $this->query($sql);
         }
 		
@@ -107,7 +110,9 @@
         
         //回收资源
 		function __destruct(){
-            mysqli_close($this->conn);
+            if($this->conn != NULL) {
+				mysqli_close($this->conn);
+			}
         }
     }
 ?>

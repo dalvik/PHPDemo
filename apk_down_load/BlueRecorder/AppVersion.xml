@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<iped>
+	<update>
+		<wp7>1.4</wp7> 
+		<ios>1.5.5</ios> 
+		<android>
+			<versionCode>701</versionCode> 
+			<versionName>V7.01</versionName> 
+			<downloadUrl>http://www.drovik.com/BlueRecorder/Recorder.zip</downloadUrl> 
+			<updateLog><![CDATA[&nbsp;&nbsp;版本信息：
+			<br/>&nbsp;&nbsp;&nbsp;&nbsp;1、更换新UI。
+			<br/>&nbsp;&nbsp;&nbsp;&nbsp;2、增加朋友圈功能
+
+	<br/>&nbsp;&nbsp;&nbsp;&nbsp;请点击确定在线升级，如果升级失败，请<a href="http://www.drovik.com/BlueRecorder/Recorder.zip">点击下载最新版本</a>
+
+	<br/>&nbsp;&nbsp;&nbsp;&nbsp;安装包大小：17.6M
+]]></updateLog>
+			<packageSize>17.6M</packageSize>
+			<uploadUrl>http://www.drovik.com/file_recv.php</uploadUrl>
+			<uploadImageUrl>http://www.drovik.com/file_recv.php</uploadImageUrl>
+			<phonenumber>15068885227</phonenumber>
+			<duration>21;22;23;23</duration>
+		</android>
+	</update>
+</iped>

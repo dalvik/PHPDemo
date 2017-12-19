@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<iped>
+	<update>
+		<wp7>1.4</wp7> 
+		<ios>1.5.5</ios> 
+		<android>
+			<versionCode>4</versionCode> 
+			<versionName>3.7.0</versionName> 
+			<downloadUrl>http://dalvik.co.cc/apk_down_load/WebCam.txt</downloadUrl> 
+			<updateLog><![CDATA[版本信息：
+OSChina.NET for Android v1.7.0 
+ 更新日志:
+1.默认加载数据均为缓存，新数据需用户手动刷新；
+2.新增问答区帖子带标签的功能；
+3.新增动弹发表评论带表情的功能；
+4.新增上传头像的功能；
+5.新增首页各列表刷新提示更新记录数；
+6.修复新安装App首次启动弹出登录框的问题；
+7.修复首页博客列表点击底部tab无法刷新的问题；
+8.修复设置左右滑动显示信息不正确的问题；
+9.修复解析xml数据错误导致无法展示的问题；
+10.修复部分手机发动弹图片变小的问题；
+
+请点击确定在线升级，如果升级失败，请到http://www.oschina.net/下载最新版本
+
+安装包大小：1.93MB
+]]></updateLog>
+		</android>
+	</update>
+</iped>

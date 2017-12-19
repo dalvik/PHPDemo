@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<iped>
+	<update>
+		<wp7>1.4</wp7> 
+		<ios>1.5.5</ios> 
+		<android>
+			<versionCode>420</versionCode> 
+			<versionName>4.2.0</versionName> 
+			<downloadUrl>http://www.drovik.com/apk_down_load/SmsManager/SmsManagerYMAdv_2012_11_19.txt</downloadUrl> 
+			<updateLog><![CDATA[版本信息：
+短信管理器 for Android v4.1.0 
+ 更新日志:
+1、修改接受短信崩溃的bug。
+
+请点击确定在线升级，如果升级失败，请到http://www.drovik.com/下载最新版本
+
+安装包大小：651KB
+]]></updateLog>
+		</android>
+	</update>
+</iped>

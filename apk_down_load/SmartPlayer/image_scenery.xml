@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<image>
+	<beauty>
+		<id>0</id> 
+		<name>海天一色</name>
+		<thumbnail><![CDATA[
+			http://www.cncqt.com/UpFiles/Picture/2008-02/hn7.jpg
+			]]></thumbnail> 
+		<src><![CDATA[
+		http://www.cncqt.com/UpFiles/Picture/2008-02/hn6.jpg
+		]]></src>
+		<desc><![CDATA[ 棕榈树剪影,与小活塞在背景 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	<beauty>
+		<id>0</id> 
+		<name>棕榈树</name>
+		<thumbnail><![CDATA[
+			http://images.quanjing.com/axiom_rm001/thu/axiom1891255.jpg
+			]]></thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/axiom_rm001/axiom1891255.jpg
+		]]></src>
+		<desc><![CDATA[ 棕榈树剪影,与小活塞在背景 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>意大利,欧洲,中欧,伦巴第</name>
+		<thumbnail><![CDATA[
+			http://images.quanjing.com/age_foto47/thu/x8c-977358.jpg
+			]]></thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/age_foto47/x8c-977358.jpg
+		]]></src>
+		<desc><![CDATA[ 欧洲落叶松,金色,彩色,高山,第一,雪,冲积,欧洲,中欧,意大利,伦巴第,十月,2009年 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>游船,运河,巴拿马</name>
+		<thumbnail>
+			<![CDATA[
+			http://images.quanjing.com/danita_rm007/thu/sa15-mde0006.jpg
+			]]></thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/danita_rm007/sa15-mde0006.jpg
+		]]></src>
+		<desc><![CDATA[ 游船,运河,巴拿马 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>韦尔比耶</name>
+		<thumbnail>
+			<![CDATA[
+			http://images.quanjing.com/pns005/thu/pnsexp463556.jpg
+			]]></thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/pns005/pnsexp463556.jpg
+		]]></src>
+		<desc><![CDATA[ 韦尔比耶 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>香港文化中心</name>
+		<thumbnail>
+			<![CDATA[
+			http://images.quanjing.com/chineseview024/thu/yt-p0046651.jpg
+			]]></thumbnail> 
+		<src><![CDATA[
+			http://preview.quanjing.com/chineseview024/yt-p0046651.jpg
+		]]></src>
+		<desc><![CDATA[ 香港尖沙嘴,香港文化中心 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>香港</name>
+		<thumbnail>
+			<![CDATA[
+			http://images.quanjing.com/chineseview031/thu/tpgrf-p001-000235.jpg
+			]]>
+		</thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/chineseview031/tpgrf-p001-000235.jpg
+		]]>
+		</src>
+		<desc><![CDATA[ 香港 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>旅游</name>
+		<thumbnail>
+			<![CDATA[
+			http://images.quanjing.com/138/thu/qj-0217.jpg
+			]]>
+		</thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/138/qj-0217.jpg
+		]]>
+		</src>
+		<desc><![CDATA[ 旅游 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>中国,香港</name>
+		<thumbnail>
+			<![CDATA[
+			http://images.quanjing.com/steve004/thu/tpx30191.jpg
+			]]>
+		</thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/steve004/tpx30191.jpg
+		]]>
+		</src>
+		<desc><![CDATA[ 
+		中国,香港,中国龙
+		]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>香港会展中心和紫荆花雕塑</name>
+		<thumbnail>
+			<![CDATA[
+			http://images.quanjing.com/170/thu/pc137-01.jpg
+			]]>
+		</thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/170/pc137-01.jpg
+		]]>
+		</src>
+		<desc><![CDATA[ 香港会展中心和紫荆花雕塑 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+	
+	<beauty>
+		<id>0</id> 
+		<name>伦敦眼,黄昏</name>
+		<thumbnail>
+			<![CDATA[
+			http://images.quanjing.com/culturarm001/thu/10ah0007rm.jpg
+			]]>
+		</thumbnail> 
+		<src><![CDATA[
+		http://preview.quanjing.com/culturarm001/10ah0007rm.jpg
+		]]>
+		</src>
+		<desc><![CDATA[ 伦敦眼睛在黄昏 ]]></desc>
+		<channel>10110;10060;10050;10020;10190;10010</channel>
+		<star>5</star>
+	</beauty>
+</image>

@@ -22,10 +22,10 @@
     $msg = null;
     if($api == "userRegistered"){
     	$account = $_GET['mobile'];
-        $isRegister = $userManager->isRegister($account);
+        $data = $userManager->isRegister($account);
         // 0：未注册 1：已注册，正常使用 2：已注册未激活  3：锁定 -1：注销
-        $data = array("status"=>$isRegister);
-        $msg = "success";
+        //$data = array("status"=>$isRegister);
+        //$msg = "success";
     } else if($api == "userRegister"){
         $str = file_get_contents("php://input");
     	$arr = array();

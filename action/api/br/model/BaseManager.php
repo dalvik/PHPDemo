@@ -12,6 +12,7 @@
         private $username;
         private $password;
         private $dbname;
+		private $dbport;
         private $charset;
         
         function __construct(){
@@ -19,11 +20,12 @@
             $username = $this->get('username');
             $password = $this->get('dbpassword');
             $dbname = $this->get('dbname');
+			$dbport = $this->get('dbport');
             $charset = $this->get('charset');
         }
         
         function initMysql(){
-            return new mysql($this->get('hostname'), $this->get('username'), $this->get('dbpassword'), $this->get('dbname'), $this->get('charset'));
+            return new mysql($this->get('hostname'), $this->get('username'), $this->get('dbpassword'), $this->get('dbname'), $this->get('dbport'), $this->get('charset'));
         }
         
         function get($name){

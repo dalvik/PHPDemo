@@ -27,7 +27,7 @@
          $this->conn = mysql_connect($this->hostname ,$this->username,$this->password)or die("数据库连接失败");
 
             //选择操作的数据库
-        mysql_select_db($this->dbname, $this->conn);
+        mysqli_select_db($this->conn, $this->dbname);
 
             //设置操作的编码
         $this->query("set names '".$this->charset."'", $this->conn);
@@ -36,7 +36,7 @@
         //执行sql语句的方法
      function query($sql){
 //echo $sql;
-            return mysqli_query($sql, $this->conn);
+            return mysqli_query($this->conn, $sql);
         }
 
         //添加记录
@@ -89,7 +89,9 @@
 
         //回收资源
      function __destruct(){
-            mysql_close($this->conn);
+			if($this->conn != NULL) {
+				mysql_close($this->conn);
+			}
         }
     }
 ?>

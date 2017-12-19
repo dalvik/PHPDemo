@@ -22,10 +22,10 @@ $technique = "technique";
 $rongyuntoken = "rongYunToken";
 $isfristlogin = "isFristLogin";
 $rich = "rich";
-$invite_code = "inviteCode";
-$invite_time = "inviteTime";
-$register_time = "registerTime";
-$user_status = "userStatus";
+$inviteCode = "inviteCode";
+$inviteTime = "inviteTime";
+$registerTime = "registerTime";
+$userStatus = "userStatus";
 $type = "type";
 
 if(!defined($_id)) define($_id, $_id);
@@ -51,9 +51,9 @@ if(!defined($technique)) define($technique, $technique);
 if(!defined($rongyuntoken)) define($rongyuntoken, $rongyuntoken);
 if(!defined($isfristlogin)) define($isfristlogin, $isfristlogin);
 if(!defined($rich)) define($rich, $rich);
-if(!defined($invite_code)) define($invite_code, $invite_code);
-if(!defined($invite_time)) define($invite_time, $invite_time);
-if(!defined($register_time)) define($register_time, $register_time);
-if(!defined($user_status)) define($user_status, $user_status);
+if(!defined($inviteCode)) define($inviteCode, $inviteCode);
+if(!defined($inviteTime)) define($inviteTime, $inviteTime);
+if(!defined($registerTime)) define($registerTime, $registerTime);
+if(!defined($userStatus)) define($userStatus, $userStatus);
 if(!defined($type)) define($type, $type);
 ?>

@@ -4,14 +4,14 @@ include "../../dbutil/mysql.php";
 include "../utils/StringsUtil.php";
 include "../model/UserManager.php";
 
-/*$invite_code = $_GET['invite_code'];
-$invite_time = $_GET['invite_time'];
-$invite_type = $_GET['invite_type'];*/
-$invite_email = "abc.acc@123.com";//$_GET['invite_email'];
+//$invite_code = $_GET['invite_code'];
+//$invite_time = $_GET['invite_time'];
+//$invite_type = $_GET['invite_type'];
+//$invite_email = $_GET['invite_email'];
 $TABLE_BR_USER = "br_user";
 date_default_timezone_set("PRC");
 
-if(!isset($_GET['inviteCode']) || !isset($_GET['inviteEmail'])){
+if(!isset($_GET['invite_code']) || !isset($_GET['invite_email'])){
 	$str = <<<html
 	<head>
 		<title>注册激活</title>
@@ -27,13 +27,15 @@ html;
     echo $str;
 } else {
 	$userManager = new UserManager();
-	$data = $userManager->activeUser($_GET['inviteEmail'], $_GET['inviteCode'], "1");
+	$inviteCode = intval($_GET['invite_code']);
+	$inviteType = intval($_GET['invite_type']);
+	$data = $userManager->activeUser($_GET['invite_email'], $inviteCode, $inviteType);
     $result = $data['code'];
 	$tip = "";
 	if($result == 1000){
 		$tip = "恭喜！激活成功。欢迎使用。";
 	} else if($result == 1005){
-		$tip = "已激活，请在客户端登陆。";
+		$tip = "已激活，请在安卓客户端登陆。";
 	} else if($result == -1007){
 		$tip = "邀请码过期，请重新获取。";
 	} else if($result == -1008){

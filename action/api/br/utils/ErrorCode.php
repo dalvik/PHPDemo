@@ -3,7 +3,7 @@
 if(!defined("common_result_success")) define("common_result_success", "200");//执行成功
 
 if(!defined("user_status_active")) define("user_status_active", "1000");//激活成功
-if(!defined("user_status_actived")) define("user_status_actived", "1005");//已激活
+if(!defined("user_status_actived")) define("user_status_actived", "1005");//已激活，请登录
 if(!defined("user_register_success")) define("user_register_success", "1010");//注册成功
 if(!defined("user_login_success")) define("user_login_success", "1011");//登陆成功
 if(!defined("user_status_locked")) define("user_status_locked", "-1001");//用户被锁定

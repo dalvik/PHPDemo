@@ -334,3 +334,13 @@
 [Sun May 14 22:59:23.724982 2017] [:error] [pid 1420:tid 1668] [client 192.168.10.105:42462] PHP Notice:  Undefined index: portraitUri in E:\\ps_web\\Alumb_Svn\\1\\action\\api\\br\\model\\RongcloudManager.php on line 42
 [Sun May 21 17:12:09.401525 2017] [:error] [pid 4208:tid 1368] [client 192.168.10.106:39221] PHP Notice:  Undefined index: name in E:\\ps_web\\Alumb_Svn\\1\\action\\api\\br\\model\\RongcloudManager.php on line 41
 [Sun May 21 17:12:09.422527 2017] [:error] [pid 4208:tid 1368] [client 192.168.10.106:39221] PHP Notice:  Undefined index: portraitUri in E:\\ps_web\\Alumb_Svn\\1\\action\\api\\br\\model\\RongcloudManager.php on line 42
+[Sun May 21 17:25:32.805477 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.806478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.807478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.807478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.807478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.808478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.808478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.808478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.809478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
+[Sun May 21 17:25:32.809478 2017] [:error] [pid 4208:tid 1368] [client ::1:62224] PHP Notice:  Undefined variable: alt in E:\\ps_web\\Alumb_Svn\\1\\count.php on line 26
